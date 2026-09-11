@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Analysis Board</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Chess.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header / Navigation Bar -->
+        <header class="app-header">
+            <h1>Chess Analysis</h1>
+            <div class="header-controls">
+                <button id="ai-button" class="btn btn-secondary">AI Insights</button>
+                <button id="options-button" class="btn btn-secondary">Settings</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-layout">
+            <!-- Left Panel: Chess Board & Controls -->
+            <section class="board-section">
+                <div class="status-bar">
+                    <div id="white-status" class="player-status active">White: To move</div>
+                    <div id="eval-badge" class="eval-badge">Eval: <span id="evaluation">0.0</span></div>
+                    <div id="black-status" class="player-status">Black: Waiting</div>
+                </div>
+
+                <!-- Board Wrapper with SVG Overlay for Arrows -->
+                <div class="board-wrapper">
+                    <div id="board" class="chessboard"></div>
+                    <svg id="arrow-canvas"></svg>
+                </div>
+
+                <div class="board-controls">
+                    <button id="first" class="btn btn-icon" title="First Move">&laquo;</button>
+                    <button id="previous" class="btn btn-icon" title="Previous Move">&lsaquo;</button>
+                    <button id="next" class="btn btn-icon" title="Next Move">&rsaquo;</button>
+                    <button id="last" class="btn btn-icon" title="Last Move">&raquo;</button>
+                </div>
+            </section>
+
+            <!-- Right Panel: Game Info & Analysis -->
+            <aside class="sidebar-section">
+                <div class="panel-card">
+                    <h3>Opening</h3>
+                    <div id="opening-name" class="info-value">Starting Position</div>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Engine Evaluation</h3>
+                    <div class="eval-grid">
+                        <div><span>Best Move:</span> <strong id="best-move">--</strong></div>
+                        <div><span>Mate in:</span> <strong id="mate">None</strong></div>
+                    </div>
+                </div>
+
+                <!-- Separate Captures Section -->
+                <div class="panel-card">
+                    <h3>Captured Pieces</h3>
+                    <div class="captures-container">
+                        <div class="capture-row">
+                            <span class="capture-label">White Captures:</span>
+                            <div id="white-captures" class="captures-box">None</div>
+                        </div>
+                        <div class="capture-row">
+                            <span class="capture-label">Black Captures:</span>
+                            <div id="black-captures" class="captures-box">None</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-card flex-expand">
+                    <h3>Move History</h3>
+                    <div id="move-history" class="move-history-list">No moves yet</div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Options Modal -->
+    <div id="options-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Board & Engine Settings</h2>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="best-move-preference" class="setting-label">Show Best Move For:</label>
+                    <select id="best-move-preference" class="select-input full-width">
+                        <option value="both">Both Players (Current Turn)</option>
+                        <option value="w">White Only</option>
+                        <option value="b">Black Only</option>
+                        <option value="none">Disabled</option>
+                    </select>
+                </div>
+
+                <button id="flip" class="btn btn-primary full-width">Flip Board Orientation</button>
+                <button id="coordinates-option" class="btn btn-secondary full-width">Toggle Coordinates</button>
+            </div>
+            <button id="close-options" class="btn btn-close">Close</button>
+        </div>
+    </div>
+
+    <!-- AI Insights Modal -->
+    <div id="ai-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2>AI Analysis Summary</h2>
+            <div class="modal-body">
+                <p><strong>Detected Opening:</strong> <span id="ai-opening">--</span></p>
+                <p><strong>Opening Note:</strong> <span id="opening-copy">--</span></p>
+                <p><strong>Recommended Continuation:</strong> <span id="best-move-modal">--</span> (<span id="best-move-copy">--</span>)</p>
+            </div>
+            <button id="close-ai" class="btn btn-close">Close</button>
+        </div>
+    </div>
+
+    <!-- Checkmate / Draw Modal -->
+    <div id="checkmate-overlay" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h2 id="winner-text">Game Over</h2>
+            <p id="winner-message">Checkmate!</p>
+            <div class="modal-actions">
+                <button id="new-game" class="btn btn-primary">New Game</button>
+                <button id="close-checkmate" class="btn btn-secondary">Review Board</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
